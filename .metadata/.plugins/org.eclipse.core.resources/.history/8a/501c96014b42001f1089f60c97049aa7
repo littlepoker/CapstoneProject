@@ -1,0 +1,62 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.stereotype.Component;
+
+import org.apache.http.HttpHeaders;
+
+@Component
+public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config>{
+	@Autowired
+	private SecurityClient securityClient;
+
+	public static class Config
+	{
+
+	}
+
+	public AuthenticationFilter()
+	{
+		super(Config.class);
+	}
+
+	@Autowired
+	private RouteValidator validator;
+
+	@Override
+	public GatewayFilter apply(Config config)
+	{
+		return ((exchange, chain) ->
+		{
+
+			if (validator.isSecured.apply(exchange.getRequest()))
+			{
+				if (!exchange.getRequest()
+						.getHeaders()
+						.containsKey(HttpHeaders.AUTHORIZATION))
+				{
+					throw new RuntimeException("Header not Found");
+				}
+				String jwtToken = "";
+				String authHeader = exchange.getRequest()
+						.getHeaders()
+						.get(HttpHeaders.AUTHORIZATION)
+						.get(0);
+				if (authHeader != null && authHeader.startsWith("Bearer "))
+				{
+					jwtToken = authHeader.substring(7);
+				}
+				String authType = securityClient.validate(jwtToken);
+				if (validator.isAdmin.apply(exchange.getRequest()) && !authType
+						.equals("admin"))
+				{
+					throw new RuntimeException("Admin Credentials Required");
+				}
+			}
+
+			return chain.filter(exchange);
+		});
+	}
+}

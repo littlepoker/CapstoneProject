@@ -1,0 +1,25 @@
+package com.example.demo;
+
+import java.util.List;
+import com.google.common.base.Predicate;
+
+
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RouteValidator {
+	List<String> openApiEndPoints = List.of("/auth/register", "/auth/login", "/auth/validate", "/product/products/**","/product/products");
+
+	List<String> adminEndPoints = List.of("/admin/");
+
+	public Predicate<ServerHttpRequest> isSecured = request -> openApiEndPoints.stream()
+			.noneMatch(uri -> request.getURI()
+					.getPath()
+					.contains(uri));
+
+	public Predicate<ServerHttpRequest> isAdmin = request -> adminEndPoints.stream()
+			.anyMatch(uri -> request.getURI()
+					.getPath()
+					.contains(uri));
+}

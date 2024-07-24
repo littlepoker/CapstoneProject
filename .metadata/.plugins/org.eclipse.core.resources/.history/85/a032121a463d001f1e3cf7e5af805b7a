@@ -1,0 +1,91 @@
+package com.example.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+	private final UserDataRepository userDataRepository;
+	
+	private final PasswordEncoder passwordEncoder;
+	
+	private final JwtService jwtService;
+	
+	private final AuthenticationManager authManager;
+	
+	private final TokenRepository tokenRepository;
+	
+	private final CartClient cartClient;
+	
+	public String register(RegisterRequest request) {
+
+		UserData userData = UserData.builder()
+				.uName(request.getUName())
+				.uEmail(request.getUEmail())
+				.uPassword(passwordEncoder.encode(request.getUPassword()))
+				.role(Role.USER)
+				.build();
+		userDataRepository.save(userData);
+		
+		return "User Registration Successful!";
+	}
+	
+
+	public AuthenticationResponse login(AuthenticationRequest request) {
+		
+			String email = request.getUEmail();
+			String password = request.getUPassword();
+			Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(
+					request.getUEmail(), request.getUPassword()));
+			
+			if (auth.isAuthenticated())
+			{
+				// Find UserEntity
+				UserData data = userDataRepository.findByuEmail(email)
+						.get();
+				// Invalidate all old tokens
+				List<TokenRecord> tokens = tokenRepository.findAllValidTokenByUserEntity(data.getUId());
+				if (!tokens.isEmpty())
+				{
+					tokenRepository.saveAll(tokens.stream()
+							.peek(d -> d.setValid(false))
+							.collect(Collectors.toList()));
+				}
+				// create and return new valid token
+				String token = jwtService.generateToken(request.getUEmail());
+				tokenRepository.save(TokenRecord.builder()
+						.token(token)
+						.userData(data)
+						.valid(true)
+						.role(data.getRole())
+						.build());
+				return token;
+			} else
+			{
+				throw new RuntimeException("Invalid Credentials");
+			}
+	}
+	
+	public void logout(String jwtToken)
+	{
+		TokenRecord token = tokenRepository.findByToken(jwtToken)
+				.get();
+		token.setValid(false);
+		tokenRepository.save(token);
+		System.out.println("Logged Out");
+	}
+}

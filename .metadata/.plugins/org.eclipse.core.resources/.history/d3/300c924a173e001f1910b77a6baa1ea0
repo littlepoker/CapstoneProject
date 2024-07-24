@@ -1,0 +1,17 @@
+package com.example.demo;
+
+import lombok.Data;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class UserDAO
+{
+	int id;
+	Name name;
+	String email;
+	Address address;
+	String phoneNumber;
+	String role;
+}

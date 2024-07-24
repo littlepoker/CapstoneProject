@@ -1,0 +1,67 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Gateway
+  main:
+    allow-circular-references: true
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        - AddResponseHeader=Access-Control-Allow-Origin, *
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: SecurityAPI
+          uri: lb://SecurityAPI
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AuthenticationFilter
+        - id: ProductAPI
+          uri: lb://ProductAPI
+          predicates:
+            - Path=/product/**
+          filters:
+            - AuthenticationFilter
+        - id: WishlistAPI
+          uri: lb://WishlistAPI
+          predicates:
+            - Path=/wishlist/**
+          filters:
+            - AuthenticationFilter
+        - id: OrdersAPI
+          uri: lb://OrdersAPI
+          predicates:
+            - Path=/orders/**
+          filters:
+            - AuthenticationFilter
+        - id: CartAPI
+          uri: lb://CartAPI
+          predicates:
+            - Path=/cart/**
+          filters:
+            - AuthenticationFilter
+        - id: DiscountAPI
+          uri: lb://DiscountAPI
+          predicates:
+            - Path=/discount/**
+          filters:
+            - AuthenticationFilter
+            
+            
+            
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    root: warn

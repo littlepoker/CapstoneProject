@@ -1,0 +1,20 @@
+package com.example.demo;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TokenRepository extends JpaRepository<Token, Integer> {
+	@Query(value = "from Token te join Users ue on te.users.id = ue.id where ue.id = ?1 and (te.valid = true)")
+	List<Token> findAllValidTokenByUsers(int userId);
+
+	Optional<Token> findByToken(String jwtToken);
+	
+	@Query (value = "delete from Token t where t.users.id = ?1")
+	void deleteByUserId(int userId);
+}

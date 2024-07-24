@@ -1,0 +1,7 @@
+1721006926550	Rename field 'uPassword'
+1721006979128	Rename field 'uId'
+1721007048159	Rename method 'findByuEmail'
+1721007117624	Rename field 'uEmail'
+1721007127774	Rename field 'uPassword'
+1721007299621	Rename local variable 'password'
+1721007489541	Rename field 'number'

@@ -1,0 +1,11 @@
+package com.example.demo;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DetailedCart
+{
+	private int userId;
+	private List<Product> products;
+}

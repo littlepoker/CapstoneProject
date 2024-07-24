@@ -1,0 +1,18 @@
+1720450923942	Delete element
+1720452449374	Rename local variable 'userEntity'
+1720545522812	Rename compilation unit 'UserDao.java'
+1720545548093	Delete element
+1720545609430	Delete element
+1720547376505	Delete element
+1720547916703	Delete element
+1720548152106	Delete element
+1720548156944	Delete element
+1720548174526	Delete element
+1720548220296	Delete element
+1720548509766	Delete element
+1720552212315	Delete element
+1720635805295	Delete element
+1720635837026	Rename type 'TokenRecord'
+1720637422984	Rename type 'UserData'
+1720637499178	Rename type 'UserDataRepository'
+1720637928720	Rename method 'findAllValidTokenByUserEntity'
