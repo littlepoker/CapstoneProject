@@ -31,7 +31,7 @@ public class AdminService {
 		Optional<Users> user = dataRepository.findById(id);
 		if (user.isPresent()) {
 			user.get().setEmail(newUser.getEmail());
-			user.get().setPass(newUser.getPass());
+			user.get().setPass(newUser.getPassword());
 			user.get().setAddress(newUser.getAddress());
 			return dataRepository.save(user.get());
 		}

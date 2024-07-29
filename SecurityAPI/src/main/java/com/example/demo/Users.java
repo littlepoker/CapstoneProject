@@ -33,7 +33,6 @@ import lombok.NoArgsConstructor;
 public class Users implements UserDetails{
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	@Column (name = "id")
 	private int id;
 	
 	@Embedded
@@ -42,7 +41,7 @@ public class Users implements UserDetails{
 	@Column (name = "email", unique = true, nullable = false)
 	private String email;
 	
-	@Column (name = "password", nullable = false)
+	@Column (name = "pass", nullable = false)
 	private String pass;
 	
 	@Embedded
@@ -53,7 +52,6 @@ public class Users implements UserDetails{
 	
 	@Column
 	private String role;
-	
 	
 	@OneToMany(mappedBy = "userData")
 	@Cascade(CascadeType.ALL)

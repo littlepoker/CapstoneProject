@@ -32,6 +32,12 @@ public class AuthenticationController {
 		return authService.login(request);
 	}
 	
+	@PostMapping("/id")
+	public String getUserId(@RequestParam("token") String token)
+	{
+		return authService.getId(token);
+	}
+	
 	@PostMapping ("/logout")
 	public void logout(@RequestParam("token") String JwtToken) {
 		authService.logout(JwtToken);
@@ -45,8 +51,8 @@ public class AuthenticationController {
 				.toString();
 	}
 	
-	@PostMapping("/address/{userId}")
-	public String getAddress(@PathVariable("userId") int userId)
+	@PostMapping("/address")
+	public String getAddress(@RequestParam("userId") int userId)
 	{
 		return authService.getAddress(userId);
 	}

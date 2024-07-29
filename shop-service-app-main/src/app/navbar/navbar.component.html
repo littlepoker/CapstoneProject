@@ -26,28 +26,28 @@
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="home">Home</a>
+          <a class="nav-link active" [routerLink]="['/']">Home</a>
         </li>
         <li class="nav-item" *ngIf="linksDisabled">
-          <a class="nav-link active" href="login">Login</a>
+          <a class="nav-link active" [routerLink]="['/login']">Login</a>
         </li>
         <li class="nav-item" *ngIf="!linksDisabled">
-          <a class="nav-link active" [routerLink]="[]" (click)="test()">Log Out</a>
+          <a class="nav-link active" (click)="test()">Log Out</a>
         </li>
         <li class="nav-item" *ngIf="linksDisabled">
-          <a class="nav-link active" href="register">Register</a>
+          <a class="nav-link active" [routerLink]="['/register']">Register</a>
         </li>
         <li class="nav-item">
-          <a [class]="navClass" href="cart">Cart</a>
+          <a [class]="navClass" [routerLink]="['/cart']">Cart</a>
         </li>
         <li class="nav-item">
-          <a [class]="navClass" href="wishlist">Wishlist</a>
+          <a [class]="navClass" [routerLink]="['/wishlist']">Wishlist</a>
         </li>
         <li class="nav-item">
-          <a [class]="navClass" href="orders">Orders</a>
+          <a [class]="navClass" [routerLink]="['/orders']">Orders</a>
         </li>
         <li class="nav-item" *ngIf="isAdmin">
-          <a class="nav-link active"  href="admin">Admin Dashboard</a>
+          <a class="nav-link active" [routerLink]="['/admin']">Admin Dashboard</a>
         </li>
       </ul>
     </div>

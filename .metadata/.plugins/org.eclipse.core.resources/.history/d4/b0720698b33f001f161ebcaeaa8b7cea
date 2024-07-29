@@ -1,7 +1,0 @@
-package com.example.demo;
-
-import org.springframework.batch.item.ItemWriter;
-
-public class ProductItemWriter implements ItemWriter<Product>{
-
-}
