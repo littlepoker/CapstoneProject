@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "identity-service", url = "localhost:9898/auth")
 public interface IdentityClient
 {
-	@PostMapping("/address/{userId}")
-	public String getAddress(@PathVariable ("userId") int userId);
+	@PostMapping("/address")
+	public String getAddress(@RequestParam ("userId") int userId);
 }
 

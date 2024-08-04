@@ -20,7 +20,7 @@ export class OrderService {
   }
 
   placeOrder() {
-    return this.http.post<any>(this.orderUrl + "/" + localStorage.getItem("userId"),null, {headers: this.getHeader()});
+    return this.http.post<any>(this.orderUrl + "/" + localStorage.getItem("userId"), null, {headers: this.getHeader()});
   }
 
 

@@ -25,8 +25,8 @@ public class CartController {
 		return cartService.getCart(userId);
 	}
 	
-	@PostMapping ("/{userId}/add/{productId}")
-	public List<Product> addItem(@PathVariable int userId, @PathVariable int productId)
+	@PostMapping ("/{userId}/add")
+	public List<Product> addItem(@PathVariable int userId, @RequestParam int productId)
 	{
 		cartService.addItem(userId, productId);
 		return getCart(userId);
